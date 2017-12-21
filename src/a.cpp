@@ -217,6 +217,7 @@ void sm::tri(int x1, int y1, int x2, int y2, int x3, int y3, int a, int b, int c
 		sla(x1, y1, x2, y2, a, b, c);
 	}else{
 		for(int x=0;x<a_x12;++x){
+			if(x+x1 > w_) break;
 			sum_x12 += a_y12;
 			sum_x13 += a_y13;
 			while(sum_x12 > sum_y12){
@@ -234,6 +235,7 @@ void sm::tri(int x1, int y1, int x2, int y2, int x3, int y3, int a, int b, int c
 		sla(x2, y2, x3, y3, a, b, c);
 	}else{
 		for(int x=0;x<a_x23;++x){
+			if(x+x2 > w_) break;
 			sum_x13 += a_y13;
 			sum_x23 += a_y23;
 			while(sum_x13 > sum_y13){
