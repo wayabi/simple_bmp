@@ -131,18 +131,35 @@ void sm::sla(int x1, int y1, int x2, int y2, int a, int b, int c)
 	}
 	int ax = x2-x1;
 	int ay = y2-y1;
+
+
 	int yy = (ay>=0?1:-1);
 	ay *= yy;
 	int add_x = 0;
 	int add_y = 0;
+
+	if(x1 < 0 && ax != 0){
+		printf("%d:%f\n", y1, -x1*yy*((double)ay/ax));
+		y1 = y1-x1*yy*((double)ay/ax);
+		x1 = 0;
+	}
+	if(x2 < 0) return;
+	if(x1 > w_) x1 = w_;
+	if(x2 > w_) x2 = w_;
+
+	if(ax > 10000000) ax /= 100000;
+	if(ay > 10000000) ay /= 100000;
 	int y = 0;
+	//if(y1 < 0) y = -y1-1;
+	//if(y1 > h_) y = -y1+1;
 	for(int x=x1;x<=x2;++x){
 		set(x, y1+y, a, b, c);
 		add_x += ay;
 		while(add_y < add_x){
 			add_y += ax;
 			y += yy;
-			if(abs(y) > abs(ay)) break;
+			if(abs(y) > ay) break;
+			//if(abs(y) > h_) break;
 			set(x, y1+y, a, b, c);
 		}
 	}
@@ -220,11 +237,13 @@ void sm::tri(int x1, int y1, int x2, int y2, int x3, int y3, int a, int b, int c
 			if(x+x1 > w_) break;
 			sum_x12 += a_y12;
 			sum_x13 += a_y13;
-			while(sum_x12 > sum_y12){
+			y12 += d_y12*((sum_x12-sum_y12)/a_x12);
+			if(sum_x12 > sum_y12){
 				y12 += d_y12;
 				sum_y12 += a_x12;
 			}
-			while(sum_x13 > sum_y13){
+			y13 += d_y13*((sum_x13-sum_y13)/a_x13);
+			if(sum_x13 > sum_y13){
 				y13 += d_y13;
 				sum_y13 += a_x13;
 			}
@@ -238,11 +257,13 @@ void sm::tri(int x1, int y1, int x2, int y2, int x3, int y3, int a, int b, int c
 			if(x+x2 > w_) break;
 			sum_x13 += a_y13;
 			sum_x23 += a_y23;
-			while(sum_x13 > sum_y13){
+			y13 += d_y13*((sum_x13-sum_y13)/a_x13);
+			if(sum_x13 > sum_y13){
 				y13 += d_y13;
 				sum_y13 += a_x13;
 			}
-			while(sum_x23 > sum_y23){
+			y23 += d_y23*((sum_x23-sum_y23)/a_x23);
+			if(sum_x23 > sum_y23){
 				y23 += d_y23;
 				sum_y23 += a_x23;
 			}
